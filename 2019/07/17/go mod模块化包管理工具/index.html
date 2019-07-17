@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="使用 go mod 原因和优势： 由于 GOPATH/src 同一个包只能有一个版本，不同项目若需引用不同版本时会出问题；用 go mod 时，会存储项目引用包的版本信息，自动去下载或去 GOPATH/pkg/mod 找该版本的包。  go mod 是 GO 1.11 版本后支持的，使用简单，不需要任何扩展。 使用 go mod 可以在任意位置建项目，不用局限在 GOPATH/src 下。  1.">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go mod模块化包管理工具">
+<meta property="og:url" content="http://blog.cunlu.wang/2019/07/17/go mod模块化包管理工具/index.html">
+<meta property="og:site_name" content="问道">
+<meta property="og:description" content="使用 go mod 原因和优势： 由于 GOPATH/src 同一个包只能有一个版本，不同项目若需引用不同版本时会出问题；用 go mod 时，会存储项目引用包的版本信息，自动去下载或去 GOPATH/pkg/mod 找该版本的包。  go mod 是 GO 1.11 版本后支持的，使用简单，不需要任何扩展。 使用 go mod 可以在任意位置建项目，不用局限在 GOPATH/src 下。  1.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-17T03:29:03.513Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go mod模块化包管理工具">
+<meta name="twitter:description" content="使用 go mod 原因和优势： 由于 GOPATH/src 同一个包只能有一个版本，不同项目若需引用不同版本时会出问题；用 go mod 时，会存储项目引用包的版本信息，自动去下载或去 GOPATH/pkg/mod 找该版本的包。  go mod 是 GO 1.11 版本后支持的，使用简单，不需要任何扩展。 使用 go mod 可以在任意位置建项目，不用局限在 GOPATH/src 下。  1.">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.cunlu.wang/2019/07/17/go mod模块化包管理工具/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>go mod模块化包管理工具 | 问道</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">问道</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">朝闻道，夕可用矣！</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.cunlu.wang/2019/07/17/go mod模块化包管理工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="asktop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="问道">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">go mod模块化包管理工具
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-17 11:01:27 / 修改时间：11:29:03" itemprop="dateCreated datePublished" datetime="2019-07-17T11:01:27+08:00">2019-07-17</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用-go-mod-原因和优势："><a href="#使用-go-mod-原因和优势：" class="headerlink" title="使用 go mod 原因和优势："></a>使用 go mod 原因和优势：</h1><ol>
+<li>由于 <code>GOPATH/src</code> 同一个包只能有一个版本，不同项目若需引用不同版本时会出问题；用 go mod 时，会存储项目引用包的版本信息，自动去下载或去 <code>GOPATH/pkg/mod</code> 找该版本的包。 </li>
+<li>go mod 是 GO 1.11 版本后支持的，使用简单，不需要任何扩展。</li>
+<li>使用 go mod 可以在任意位置建项目，不用局限在 <code>GOPATH/src</code> 下。</li>
+</ol>
+<h1 id="1-mod项目创建-或-项目mod化-步骤"><a href="#1-mod项目创建-或-项目mod化-步骤" class="headerlink" title="1. mod项目创建 或 项目mod化 步骤"></a>1. mod项目创建 或 项目mod化 步骤</h1><p>在任意路径下创建项目文件夹下 或 项目根目录下，执行cmd命令 <code>go mod init {项目名}</code> 进行mod初始化，然后会在项目根目录下自动生成 <code>go.mod</code> 包管理文件。<br>例如：在下 <code>D:\gomod\testmod</code> 执行cmd命令 <code>go mod init testmod</code> ，显示 <code>go: creating new go.mod: module modtest</code> 即表示成功了。</p>
+<h1 id="2-go-mod-管理方式说明"><a href="#2-go-mod-管理方式说明" class="headerlink" title="2. go mod 管理方式说明"></a>2. go mod 管理方式说明</h1><table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>go.mod</td>
+<td>管理引用的包 和 版本（日期和Git版本等信息）</td>
+</tr>
+</tbody></table>
+<ol>
+<li>只要项目根目录下有 <code>go.mod</code> 文件，则该项目引用包管理即是通过 go mod 方式管理的。</li>
+<li>当项目编译时，若 <code>go.mod</code> 有定义引用包的版本信息，则会去引用或下载并引用该版本的包；否则会下载最新的包放在 <code>GOPATH/pkg/mod</code> 下并将包的引用信息添加到 <code>go.mod</code> 中。</li>
+<li>在 <code>go.mod</code> 同级目录下执行的 <code>go get ...</code> 命令，会下载最新的包会放在 <code>GOPATH/pkg/cache</code> 和 <code>GOPATH/pkg/mod</code> 下，而不是 <code>GOPATH/src</code> 下。</li>
+<li>go mod 模式切换：<br> go 1.11中支持通过设置临时环境变量 <code>set GO111MODULE=off</code> 来关闭 go mod 模式，则此时项目必须移动到 <code>GOPATH/src</code> 目录下，同时引用的包也不会去  <code>GOPATH/pkg/mod</code> 里找，而是 <code>GOPATH/src</code> 下找。</li>
+</ol>
+<h1 id="3-go-mod-包引用并调用步骤"><a href="#3-go-mod-包引用并调用步骤" class="headerlink" title="3. go mod 包引用并调用步骤"></a>3. go mod 包引用并调用步骤</h1><p>说明：项目中引用的包，在项目编译时会自动将 go.mod 中写入版本的包和 未写入的包的最新版本下载（未写入的也会将最新版本信息写入到 go.mod 中）。<br>但是，==由于开发时，未下载或未写入到 go.mod 中，无法直接调用==，所以，执行以下操作即可：</p>
+<h2 id="方式1：自动下载包或查找已下载的包并写入到-go-mod-中"><a href="#方式1：自动下载包或查找已下载的包并写入到-go-mod-中" class="headerlink" title="方式1：自动下载包或查找已下载的包并写入到 go.mod 中"></a>方式1：自动下载包或查找已下载的包并写入到 <code>go.mod</code> 中</h2><ol>
+<li><p>项目里需要先 import 包（已经import的可直接执行第2步）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">	...</span><br><span class="line">	&quot;github.com/asktop/gotools/atime&quot;</span><br><span class="line">	...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>go mod tidy</code> 将项目所有引用的包，自动下载最新的包到 <code>GOPATH/pkg/mod</code> 下或查找 <code>GOPATH/pkg/mod</code>最新的包，并自动写入到 <code>go.mod</code> 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="方式2：手动下载包并手动写入到-go-mod-中"><a href="#方式2：手动下载包并手动写入到-go-mod-中" class="headerlink" title="方式2：手动下载包并手动写入到 go.mod 中"></a>方式2：手动下载包并手动写入到 <code>go.mod</code> 中</h2><ol>
+<li><p>go get 包到 <code>GOPATH/pkg/mod</code> 下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get [pkg]</span><br><span class="line">go get github.com/asktop/gotools/atime</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将包的项目路径 和 项目版本信息 手动写入到 <code>go.mod</code> 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require (</span><br><span class="line">	...</span><br><span class="line">	github.com/asktop/gotools v0.0.0-20190629032756-7e52dedd6814</span><br><span class="line">	...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="4-Goland-设置mod模式和被墙代理"><a href="#4-Goland-设置mod模式和被墙代理" class="headerlink" title="4. Goland 设置mod模式和被墙代理"></a>4. Goland 设置mod模式和被墙代理</h1><h2 id="4-1-Goland-mod模式："><a href="#4-1-Goland-mod模式：" class="headerlink" title="4.1 Goland mod模式："></a>4.1 Goland mod模式：</h2><p>Goland开启<code>File——Settings——Go——Go Modules——勾选Enable...；Proxy选择direct</code> 。</p>
+<h2 id="4-2-被墙代理"><a href="#4-2-被墙代理" class="headerlink" title="4.2 被墙代理"></a>4.2 被墙代理</h2><p>方式1：<br>Goland设置<code>File——Settings——Go——Go Modules——Proxy设置：https://goproxy.io</code>   </p>
+<p>方式2：<br>go.mod修改替换被墙地址  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">replace (</span><br><span class="line">    cloud.google.com/go =&gt; github.com/GoogleCloudPlatform/google-cloud-go latest</span><br><span class="line">    golang.org/x/crypto =&gt; github.com/golang/crypto latest</span><br><span class="line">    golang.org/x/net =&gt; github.com/golang/net latest</span><br><span class="line">    golang.org/x/sync =&gt; github.com/golang/sync latest</span><br><span class="line">    golang.org/x/sys =&gt; github.com/golang/sys latest</span><br><span class="line">    golang.org/x/text =&gt; github.com/golang/text latest</span><br><span class="line">    google.golang.org/appengine =&gt; github.com/golang/appengine latest</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-切换到-vendor-模式"><a href="#5-切换到-vendor-模式" class="headerlink" title="5. 切换到 vendor 模式"></a>5. 切换到 vendor 模式</h1><p>目前 go mod 各方面支持还不够完善，如果想切换回 vendor 模式，可以通过下面两种方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 临时切换</span><br><span class="line">$ go mod vendor</span><br><span class="line">$ go run -mod=vendor main.go</span><br><span class="line"></span><br><span class="line"># 或设置成全局环境变量</span><br><span class="line"># export GOFLAGS=-mod=vendor</span><br><span class="line">$ go run main.go</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-go-mod-常用命令"><a href="#6-go-mod-常用命令" class="headerlink" title="6. go mod 常用命令"></a>6. go mod 常用命令</h1><ol>
+<li><p>项目module初始化<br> 执行命令go mod init在当前目录下生成一个go.mod文件，执行这条命令时，当前目录不能存在go.mod文件。如果之前生成过，要先删除。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod init &#123;项目名&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载并添加缺失的包以及移除不需要的包<br> 执行go mod tidy命令，它会添加缺失的模块以及移除不需要的模块。执行后会生成go.sum文件(模块下载条目)。添加参数-v，例如go mod tidy -v可以将执行的信息，即删除和添加的包打印到命令行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go mod tidy</span><br><span class="line">go mod tidy -v</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查当前模块的依赖是否全部下载下来，是否下载下来被修改过<br> 执行命令go mod verify来检查当前模块的依赖是否全部下载下来，是否下载下来被修改过。如果所有的模块都没有被修改过，那么执行这条命令之后，会打印all modules verified。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod verify</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将所有依赖包添加到vendor中<br> 执行命令go mod vendor生成vendor文件夹，该文件夹下将会放置你go.mod文件描述的依赖包，文件夹下同时还有一个文件modules.txt，它是你整个工程的所有模块。在执行这条命令之前，如果你工程之前有vendor目录，应该先进行删除。同理go mod vendor -v会将添加到vendor中的模块打印出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go mod vendor</span><br><span class="line">go mod vendor -v</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/17/Hexo博客安装使用笔记/" rel="next" title="Hexo博客安装使用笔记">
+                <i class="fa fa-chevron-left"></i> Hexo博客安装使用笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/17/govendor包管理工具/" rel="prev" title="govendor包管理工具">
+                govendor包管理工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="asktop">
+  
+  <p class="site-author-name" itemprop="name">asktop</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-go-mod-原因和优势："><span class="nav-number">1.</span> <span class="nav-text">使用 go mod 原因和优势：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-mod项目创建-或-项目mod化-步骤"><span class="nav-number">2.</span> <span class="nav-text">1. mod项目创建 或 项目mod化 步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-go-mod-管理方式说明"><span class="nav-number">3.</span> <span class="nav-text">2. go mod 管理方式说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-go-mod-包引用并调用步骤"><span class="nav-number">4.</span> <span class="nav-text">3. go mod 包引用并调用步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方式1：自动下载包或查找已下载的包并写入到-go-mod-中"><span class="nav-number">4.1.</span> <span class="nav-text">方式1：自动下载包或查找已下载的包并写入到 go.mod 中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方式2：手动下载包并手动写入到-go-mod-中"><span class="nav-number">4.2.</span> <span class="nav-text">方式2：手动下载包并手动写入到 go.mod 中</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Goland-设置mod模式和被墙代理"><span class="nav-number">5.</span> <span class="nav-text">4. Goland 设置mod模式和被墙代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Goland-mod模式："><span class="nav-number">5.1.</span> <span class="nav-text">4.1 Goland mod模式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-被墙代理"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 被墙代理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-切换到-vendor-模式"><span class="nav-number">6.</span> <span class="nav-text">5. 切换到 vendor 模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-go-mod-常用命令"><span class="nav-number">7.</span> <span class="nav-text">6. go mod 常用命令</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">asktop</span>
+
+  
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
