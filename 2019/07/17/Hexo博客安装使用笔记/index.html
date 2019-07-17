@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="官网：https://hexo.io/zh-cn/教程：https://blog.csdn.net/sinat_37781304/article/details/82729029 1. 安装 Hexo 工具使用环境：需要安装git和nodejs。  1npm install hexo-cli -g  2. 创建博客项目1234567891011# 初始化一个 hexo 博客项目hexo init">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo博客安装使用笔记">
+<meta property="og:url" content="http://blog.cunlu.wang/2019/07/17/Hexo博客安装使用笔记/index.html">
+<meta property="og:site_name" content="问道">
+<meta property="og:description" content="官网：https://hexo.io/zh-cn/教程：https://blog.csdn.net/sinat_37781304/article/details/82729029 1. 安装 Hexo 工具使用环境：需要安装git和nodejs。  1npm install hexo-cli -g  2. 创建博客项目1234567891011# 初始化一个 hexo 博客项目hexo init">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-17T06:47:38.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo博客安装使用笔记">
+<meta name="twitter:description" content="官网：https://hexo.io/zh-cn/教程：https://blog.csdn.net/sinat_37781304/article/details/82729029 1. 安装 Hexo 工具使用环境：需要安装git和nodejs。  1npm install hexo-cli -g  2. 创建博客项目1234567891011# 初始化一个 hexo 博客项目hexo init">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.cunlu.wang/2019/07/17/Hexo博客安装使用笔记/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Hexo博客安装使用笔记 | 问道</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">问道</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">朝闻道，夕可用矣！</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.cunlu.wang/2019/07/17/Hexo博客安装使用笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="asktop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="问道">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hexo博客安装使用笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-17 10:58:03 / 修改时间：14:47:38" itemprop="dateCreated datePublished" datetime="2019-07-17T10:58:03+08:00">2019-07-17</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>官网：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">https://hexo.io/zh-cn/</a><br>教程：<a href="https://blog.csdn.net/sinat_37781304/article/details/82729029" target="_blank" rel="noopener">https://blog.csdn.net/sinat_37781304/article/details/82729029</a></p>
+<h1 id="1-安装-Hexo-工具"><a href="#1-安装-Hexo-工具" class="headerlink" title="1. 安装 Hexo 工具"></a>1. 安装 Hexo 工具</h1><p>使用环境：需要安装<code>git</code>和<code>nodejs</code>。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-创建博客项目"><a href="#2-创建博客项目" class="headerlink" title="2. 创建博客项目"></a>2. 创建博客项目</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个 hexo 博客项目</span><br><span class="line">hexo init &#123;blog&#125;.</span><br><span class="line"># 安装依赖</span><br><span class="line">cd &#123;blog&#125;</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line"># 创建markdown博客文章</span><br><span class="line">hexo new &#123;docname&#125;</span><br><span class="line"></span><br><span class="line"># 编辑markdown博客文章</span><br><span class="line">编辑 source/_posts 下生成的markdown文章</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-博客项目目录说明"><a href="#3-博客项目目录说明" class="headerlink" title="3. 博客项目目录说明"></a>3. 博客项目目录说明</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">|——.deploy_git      # github git仓库</span><br><span class="line">|——node_modules     # node模块</span><br><span class="line">|——public           # hexo g 生成的文章静态页面</span><br><span class="line">|——source           # 博客markdown等源文件</span><br><span class="line">|    |-- _posts     # markdown博客文章目录</span><br><span class="line">|——themes           # 主题包</span><br><span class="line">|——_config.yml      # 配置文件</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Hexo启动本地服务"><a href="#4-Hexo启动本地服务" class="headerlink" title="4. Hexo启动本地服务"></a>4. Hexo启动本地服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 删除本地的文章静态页面（非文章更新时，可以不执行）</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"># 将source下的文章生成静态页面</span><br><span class="line">hexo generate |缩写：hexo g</span><br><span class="line"></span><br><span class="line"># hexo启动本地服务</span><br><span class="line">hexo server |缩写：hexo s</span><br><span class="line"></span><br><span class="line"># 访问本地服务</span><br><span class="line">localhost:4000</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-Hexo部署到GitHub-Page服务"><a href="#5-Hexo部署到GitHub-Page服务" class="headerlink" title="5. Hexo部署到GitHub Page服务"></a>5. Hexo部署到GitHub Page服务</h1><h2 id="5-1-GitHub上创建公开仓库-username-github-io"><a href="#5-1-GitHub上创建公开仓库-username-github-io" class="headerlink" title="5.1 GitHub上创建公开仓库 {username}.github.io"></a>5.1 GitHub上创建公开仓库 <code>{username}.github.io</code></h2><p><strong>username为用户的GitHub用户名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asktop.github.io</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-将本地项目与GitHub仓库关联"><a href="#5-2-将本地项目与GitHub仓库关联" class="headerlink" title="5.2 将本地项目与GitHub仓库关联"></a>5.2 将本地项目与GitHub仓库关联</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#修改本地配置文件 _config.yml，最后的deploy修改为</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/asktop/asktop.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-3-安装-deploy-git-部署工具"><a href="#5-3-安装-deploy-git-部署工具" class="headerlink" title="5.3 安装 deploy-git 部署工具"></a>5.3 安装 deploy-git 部署工具</h2><p><strong>用于使用 hexo deploy 命令将本地项目提交部署到GitHub</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-4-部署到远程GitHub-Page服务"><a href="#5-4-部署到远程GitHub-Page服务" class="headerlink" title="5.4 部署到远程GitHub Page服务"></a>5.4 部署到远程GitHub Page服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 删除本地的文章静态页面（非文章更新时，可以不执行）</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"># 将source下的文章生成静态页面</span><br><span class="line">hexo generate |缩写：hexo g</span><br><span class="line"></span><br><span class="line"># 部署到GitHub远程仓库 &#123;username&#125;.github.io</span><br><span class="line">hexo deploy |缩写：hexo d</span><br><span class="line"></span><br><span class="line"># 访问远程服务 https://&#123;username&#125;.github.io</span><br><span class="line">https://asktop.github.io</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-Hexo多终端操作（将源码放到GitHub上）"><a href="#6-Hexo多终端操作（将源码放到GitHub上）" class="headerlink" title="6. Hexo多终端操作（将源码放到GitHub上）"></a>6. Hexo多终端操作（将源码放到GitHub上）</h1><h2 id="6-1-GitHub仓库-username-github-io-创建分支-source"><a href="#6-1-GitHub仓库-username-github-io-创建分支-source" class="headerlink" title="6.1 GitHub仓库 {username}.github.io 创建分支 source"></a>6.1 GitHub仓库 <code>{username}.github.io</code> 创建分支 <code>source</code></h2><p><strong>在仓库Settings中将默认分支改为<code>source</code></strong></p>
+<h2 id="6-2-git-clone-将默认分支source默认分支下载到本地"><a href="#6-2-git-clone-将默认分支source默认分支下载到本地" class="headerlink" title="6.2 git clone ...将默认分支source默认分支下载到本地"></a>6.2 <code>git clone ...</code>将默认分支<code>source</code>默认分支下载到本地</h2><p><strong>删除下载本地文件夹下除<code>.git</code>外的所有文件，然后提交，清空<code>source分支</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;init&quot;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-创建-gitignore文件"><a href="#6-3-创建-gitignore文件" class="headerlink" title="6.3 创建.gitignore文件"></a>6.3 创建<code>.gitignore</code>文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.deploy*/</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-4-将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub"><a href="#6-4-将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub" class="headerlink" title="6.4 将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub"></a>6.4 将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scaffolds</span><br><span class="line">source</span><br><span class="line">themes</span><br><span class="line">_config.yml</span><br><span class="line">package.json</span><br><span class="line">package-lock.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-5-其他终端使用"><a href="#6-5-其他终端使用" class="headerlink" title="6.5 其他终端使用"></a>6.5 其他终端使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone ...</span><br><span class="line">cd &#123;username&#125;.github.io</span><br><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-设置个人域名"><a href="#7-设置个人域名" class="headerlink" title="7. 设置个人域名"></a>7. 设置个人域名</h1><ol>
+<li><p>在阿里云或腾讯云等购买域名 <code>asktop.top</code>，进入购买域名的服务商控制台，域名解析，添加记录：<br> a.记录类型：A<br> b.主机记录：@ 或 www 或 blog （@ 为一级域名 <code>asktop.top</code>；blog 为二级域名 <code>blog.asktop.top</code>；自定义）<br> c.解析线路：默认<br> d.记录值：192.30.252.153 或 192.30.252.154 （GitHub的服务器地址）</p>
+</li>
+<li><p>登录GitHub——{username}.github.io项目——Settings——Options——GitHub Pages——Custom domain——设置解析的域名 <code>asktop.top</code> 或 <code>blog.asktop.top</code>。</p>
+</li>
+<li><p>本地source文件夹下创建名为<code>CNAME</code>文件（Windows下cmd命令<code>type &gt; CNAME</code>），编辑<code>CNAME</code>文件添加域名 <code>asktop.top</code> 或 <code>blog.asktop.top</code>。</p>
+</li>
+<li><p>将<code>CNAME</code>文件部署到GitHub仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问个人域名 <code>asktop.top</code> 或 <code>blog.asktop.top</code>；访问<a href="https://asktop.github.io会自动跳转到个人域名。" target="_blank" rel="noopener">https://asktop.github.io会自动跳转到个人域名。</a></p>
+</li>
+</ol>
+<h1 id="8-设置网站信息"><a href="#8-设置网站信息" class="headerlink" title="8. 设置网站信息"></a>8. 设置网站信息</h1><p><strong>修改配置文件 _config.yml</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: 问道</span><br><span class="line">subtitle: 朝闻道，夕可用矣！</span><br><span class="line">description:</span><br><span class="line">keywords:</span><br><span class="line">author: asktop</span><br><span class="line">language: zh-CN</span><br><span class="line">timezone:</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-修改主题"><a href="#9-修改主题" class="headerlink" title="9. 修改主题"></a>9. 修改主题</h1><ol>
+<li>下载主题 <a href="https://hexo.io/themes" target="_blank" rel="noopener">https://hexo.io/themes</a></li>
+<li>将主题文件夹放在 <code>themes</code> 文件夹下</li>
+<li>修改 _config.yml 的 theme，默认为 landscape<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># next主题：https://github.com/theme-next/hexo-theme-next</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="10-添加标签菜单"><a href="#10-添加标签菜单" class="headerlink" title="10. 添加标签菜单"></a>10. 添加标签菜单</h1><ol>
+<li><p>新建标签页面：<code>$ hexo new page &quot;tags&quot;</code></p>
+</li>
+<li><p>编辑新建的标签页面：<code>source\tags\index.md</code></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">title: 标签</span><br><span class="line">type: tags</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>修改主题 _config.yml 的 menu，默认为 landscape</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  # 开启tags</span><br><span class="line">  tags: /tags/ || tags</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>文章添加参数：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tags:</span><br><span class="line">  - 标签名1</span><br><span class="line">  - 标签名2</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/17/go mod模块化包管理工具/" rel="prev" title="go mod模块化包管理工具">
+                go mod模块化包管理工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="asktop">
+  
+  <p class="site-author-name" itemprop="name">asktop</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装-Hexo-工具"><span class="nav-number">1.</span> <span class="nav-text">1. 安装 Hexo 工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-创建博客项目"><span class="nav-number">2.</span> <span class="nav-text">2. 创建博客项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-博客项目目录说明"><span class="nav-number">3.</span> <span class="nav-text">3. 博客项目目录说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Hexo启动本地服务"><span class="nav-number">4.</span> <span class="nav-text">4. Hexo启动本地服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Hexo部署到GitHub-Page服务"><span class="nav-number">5.</span> <span class="nav-text">5. Hexo部署到GitHub Page服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-GitHub上创建公开仓库-username-github-io"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 GitHub上创建公开仓库 {username}.github.io</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-将本地项目与GitHub仓库关联"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 将本地项目与GitHub仓库关联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-安装-deploy-git-部署工具"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 安装 deploy-git 部署工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-部署到远程GitHub-Page服务"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 部署到远程GitHub Page服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Hexo多终端操作（将源码放到GitHub上）"><span class="nav-number">6.</span> <span class="nav-text">6. Hexo多终端操作（将源码放到GitHub上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-GitHub仓库-username-github-io-创建分支-source"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 GitHub仓库 {username}.github.io 创建分支 source</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-git-clone-将默认分支source默认分支下载到本地"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 git clone ...将默认分支source默认分支下载到本地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-创建-gitignore文件"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 创建.gitignore文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub"><span class="nav-number">6.4.</span> <span class="nav-text">6.4 将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-其他终端使用"><span class="nav-number">6.5.</span> <span class="nav-text">6.5 其他终端使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-设置个人域名"><span class="nav-number">7.</span> <span class="nav-text">7. 设置个人域名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-设置网站信息"><span class="nav-number">8.</span> <span class="nav-text">8. 设置网站信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-修改主题"><span class="nav-number">9.</span> <span class="nav-text">9. 修改主题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-添加标签菜单"><span class="nav-number">10.</span> <span class="nav-text">10. 添加标签菜单</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">asktop</span>
+
+  
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
