@@ -91,7 +91,50 @@ hexo deploy |缩写：hexo d
 https://asktop.github.io
 ```
 
-# 6. 设置个人域名
+# 6. Hexo多终端操作（将源码放到GitHub上）
+## 6.1 GitHub仓库 `{username}.github.io` 创建分支 `source`
+**在仓库Settings中将默认分支改为`source`**
+
+## 6.2 `git clone ...`将默认分支`source`默认分支下载到本地
+**删除下载本地文件夹下除`.git`外的所有文件，然后提交，清空`source分支`**
+```
+git add .
+git commit -m "init"
+git push
+```
+
+## 6.3 创建`.gitignore`文件
+```
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+```
+
+## 6.4 将原项目下的文件拷贝到当前文件夹下，然后提交源码到GitHub
+```
+scaffolds
+source
+themes
+_config.yml
+package.json
+package-lock.json
+```
+
+## 6.5 其他终端使用
+```
+git clone ...
+cd {username}.github.io
+npm install
+npm install hexo-deployer-git --save
+hexo g
+hexo d
+```
+
+# 7. 设置个人域名
 1. 在阿里云或腾讯云等购买域名 `asktop.top`，进入购买域名的服务商控制台，域名解析，添加记录：    
     a.记录类型：A  
     b.主机记录：@ 或 www 或 blog （@ 为一级域名 `asktop.top`；blog 为二级域名 `blog.asktop.top`；自定义）  
@@ -107,7 +150,7 @@ hexo d
 ```
 5. 访问个人域名 `asktop.top` 或 `blog.asktop.top`；访问https://asktop.github.io会自动跳转到个人域名。
 
-# 7. 设置网站信息
+# 8. 设置网站信息
 **修改配置文件 _config.yml**
 ```
 # Site
@@ -120,7 +163,7 @@ language: zh-CN
 timezone:
 ```
 
-# 8. 修改主题
+# 9. 修改主题
 1. 下载主题 https://hexo.io/themes
 2. 将主题文件夹放在 `themes` 文件夹下
 3. 修改 _config.yml 的 theme，默认为 landscape
@@ -129,7 +172,7 @@ timezone:
 theme: next
 ```
 
-# 9. 添加标签菜单
+# 10. 添加标签菜单
 
 1. 新建标签页面：`$ hexo new page "tags"`
 
